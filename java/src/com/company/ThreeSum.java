@@ -3,11 +3,12 @@ package com.company;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.HashSet;
 
 class ThreeSum {
     List<List<Integer>> threeSum(int[] nums) {
-        ArrayList< List<Integer> > result = new ArrayList<>();
-        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+        HashSet< List<Integer> > result = new HashSet<>();
+        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             for (int j = 0; j < i; j++) {
                 Integer value = - (nums[i] + nums[j]);
@@ -16,7 +17,7 @@ class ThreeSum {
                     list.add(nums[i]);
                 }
                 else
-                    map.put(value, new ArrayList<>(nums[i]));
+                    map.put(value, new HashSet<>(List.of(nums[i])));
             }
         }
 
@@ -33,6 +34,6 @@ class ThreeSum {
             }
         }
 
-        return result;
+        return new ArrayList<>(result);
     }
 }
