@@ -18,7 +18,7 @@ public class Main {
 		{
 			for(Integer elem: part)
 			{
-				System.out.print(elem);
+				System.out.printf("%d, ", elem);
 			}
 			System.out.println();
 		}
