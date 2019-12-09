@@ -46,7 +46,7 @@ class ThreeSum {
                 {
                     Pair<Integer, Integer>[] solution = new Pair[3];
                     solution[0] = new Pair<> ( pair.getKey(), pair.getValue() );
-                    solution[1] = new Pair<> ( pair2.getKey(), pair.getValue() );
+                    solution[1] = new Pair<> ( pair2.getKey(), pair2.getValue() );
                     solution[2] = new Pair<> ( y, map.get(y) );
                     if (isSolutionValid(solution)) {
                         List<Integer> solutionList = Arrays.asList(
