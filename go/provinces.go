@@ -2,79 +2,48 @@ package main
 
 import "fmt"
 
-func contains(arr []int, val int) bool {
-	for _, v := range arr {
-		if v == val {
-			return true
+func traverse(isConnected [][]int, visited []bool, i int) {
+	visited[i] = true
+	var stack []int
+	for j := 0; j < len(isConnected); j++ {
+		if i == j {
+			continue
+		}
+		if isConnected[i][j] == 1 {
+			if !visited[j] {
+				stack = append(stack, j)
+			}
 		}
 	}
-	return false
-}
 
-func min(a, b int) int {
-	if a < b {
-		return a
+	for len(stack) > 0 {
+		n := len(stack) - 1
+		j := stack[n]
+		traverse(isConnected, visited, j)
+		stack = stack[:n] // pop
 	}
-	return b
-}
-
-func findMin(arr []int) int {
-	if len(arr) == 0 {
-		return 0 // or any other default value
-	}
-	min := arr[0]
-	for _, val := range arr {
-		if val < min {
-			min = val
-		}
-	}
-	return min
 }
 
 func findCircleNum(isConnected [][]int) int {
 	size := len(isConnected)
-	union := make([]int, size)
-	for i := range union {
-		union[i] = -1
+	visited := make([]bool, size)
+	for i := range visited {
+		visited[i] = false
 	}
-	latest_index := 0
+
+	var count = 0
 	for i := 0; i < len(isConnected); i++ {
-		var index int
-		var old_indices []int
-		if union[i] != -1 {
-			index = union[i]
-		} else {
-			index = latest_index
-			latest_index++
+		if visited[i] == true {
+			continue
 		}
-		for j := 0; j < len(isConnected[i]); j++ {
-			if i == j {
-				continue
-			}
-			if isConnected[i][j] == 1 {
-				if union[j] != -1 {
-					old_indices = append(old_indices, union[j])
-				}
-			}
-		}
-
-		index = min(index, findMin(old_indices))
-		for j := 0; j < len(union); j++ {
-			if contains(old_indices, union[j]) {
-				union[j] = index
-			}
-		}
+		count++
+		traverse(isConnected, visited, i)
 	}
-
-	unique := make(map[int]bool)
-	for _, val := range union {
-		unique[val] = true
-	}
-	return len(unique)
+	return count
 }
 
 func main() {
 	matrix := [][]int{
-		{1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0}, {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1}, {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}}
+		{1, 1, 0}, {1, 1, 0}, {0, 0, 1}}
 	fmt.Println(findCircleNum(matrix))
 }
